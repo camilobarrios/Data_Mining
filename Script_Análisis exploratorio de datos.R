@@ -7,10 +7,10 @@
 ### Configurar el directorio de trabajo ###
 ###########################################
 
-setwd("C:/Users/camil/Dropbox/Projects 2021/Proyecto EAFIT/Clases/Semana 14/Base de datos_Análisis exploratorio")
+setwd("C:/Users/camil/Dropbox/Projects 2021/Proyecto EAFIT/Clases/Semana 14/Base de datos_Anï¿½lisis exploratorio")
 
 #####################################################
-## Importar librerias y la base de datos principal ##
+## Importar librerias y la base de datos principal #
 #####################################################
 
 library(ggplot2)
@@ -20,7 +20,7 @@ library(funModeling)
 
 ### Import database ###
 
-data=read.table("Base de datos_Análisis exploratorio_Cultivo de arroz.csv",head=T,sep=",")
+data=read.table("Base de datos_Anï¿½lisis exploratorio_Cultivo de arroz.csv",head=T,sep=",")
 
 #####################################################
 ## Evaluar valores faltante, ceros y tipo de datos ##
@@ -32,7 +32,7 @@ df_status(data)
 # q_zeros: cuantifica la cantidad de ceros (p_zeros: in percent)
 # q_inf: cuantifica valores infinitos (p_inf: in percent)
 # q_na: cuantifiva valores NA (p_na: in percent)
-# type: factor número
+# type: factor nï¿½mero
 # unique: quantity of unique values
 
 #######################################
@@ -41,7 +41,7 @@ df_status(data)
 
 my_data = df_status(data, print_results = F)
 
-# Remover variables con más del 30% de los registros iguales a cero
+# Remover variables con mï¿½s del 30% de los registros iguales a cero
 vars_to_remove=filter(my_data, p_zeros > 30)  %>% .$variable
 vars_to_remove
 
@@ -58,7 +58,7 @@ my_data_2[is.na(my_data_2)]=0
 my_data_2
 
 ###################################################
-### Seleccionar un grupo específico de variables ##
+### Seleccionar un grupo especï¿½fico de variables ##
 ###################################################
 
 data_2=subset(data, select = c(Station, Soil_2, PARCUM, Total_Pre_all_CS, Total_Rice_CWR_all_CS, Total_IWR_all_CS,  
@@ -67,7 +67,7 @@ data_2=subset(data, select = c(Station, Soil_2, PARCUM, Total_Pre_all_CS, Total_
                                Num_HW_Tmin, Yield))
 
 
-## Obtener otras estadísticas: filas totales, columnas totales y nombres de columnas
+## Obtener otras estadï¿½sticas: filas totales, columnas totales y nombres de columnas
 
 # Total filas
 nrow(data_2)
@@ -88,26 +88,26 @@ unique(data_2$Station)
 ## Boxplots ##
 ##############
 
-# Opción 1
+# Opciï¿½n 1
 
 ggplot(data_2, aes(x=Station, y=Yield)) + 
   geom_boxplot()
 
-# Opción 2
+# Opciï¿½n 2
 ggplot(data_2, aes(x=reorder(Station,-Total_Pre_all_CS,na.rm = TRUE), y=Total_Pre_all_CS)) + 
   geom_boxplot()
 
-# Opción 3
+# Opciï¿½n 3
 ggplot(data_2, aes(x=reorder(Station,-Total_Pre_all_CS,na.rm = TRUE), y=Total_Pre_all_CS)) + 
   geom_boxplot()+
-  labs(title="Gráfica de precipitación acumulada \n por estación meteorológica", x ="Estación meteorológica", y = "Rendimiento (kg/ha)") +
+  labs(title="Grï¿½fica de precipitaciï¿½n acumulada \n por estaciï¿½n meteorolï¿½gica", x ="Estaciï¿½n meteorolï¿½gica", y = "Rendimiento (kg/ha)") +
   coord_flip()
 
 #################
 ## Histogramas ##
 #################
 
-# Histograma básico
+# Histograma bï¿½sico
 ggplot(data_2, aes(x=Yield)) + geom_histogram()
 
 # Cambiar el ancho de las barras
@@ -123,7 +123,7 @@ p + geom_vline(aes(xintercept=mean(Total_Pre_all_CS)),
               color="blue", linetype="dashed", size=1)
 
 
-# histograma con gráfica de densidad
+# histograma con grï¿½fica de densidad
 ggplot(data_2, aes(x=Total_Pre_all_CS)) + 
 #  geom_histogram(aes(y=..density..), colour="black", fill="white")+
   geom_density(alpha=.2, fill="#FF6666")
@@ -138,33 +138,33 @@ estaciones = rbind(Neiva, Ibague)
 # Interponemos los histogramas de las dos estaciones
 ggplot(estaciones, aes(x=Total_Pre_all_CS, color=Station)) +
   geom_histogram(fill="white", alpha=0.5, position="dodge")+
-  labs(title="Histogramas", x ="Precipitación acumulada")+
-  theme_bw() # fondo blanco y líneas de cuadrícula grises
+  labs(title="Histogramas", x ="Precipitaciï¿½n acumulada")+
+  theme_bw() # fondo blanco y lï¿½neas de cuadrï¿½cula grises
 
 #############################
-## Diagramas de disperción ##
+## Diagramas de disperciï¿½n ##
 #############################
 
-# Diagramas de disperción básico
+# Diagramas de disperciï¿½n bï¿½sico
 ggplot(estaciones, aes(x=PARCUM, y=Yield)) + geom_point()
 
-# Adicionamos la linea de regresión
+# Adicionamos la linea de regresiï¿½n
 ggplot(estaciones, aes(x=PARCUM, y=Yield)) + 
   geom_point()+
-  geom_smooth(method=lm) # Método lineal
+  geom_smooth(method=lm) # Mï¿½todo lineal
 
 
-# Método Loess (Regresión ajustada a los datos)
+# Mï¿½todo Loess (Regresiï¿½n ajustada a los datos)
 ggplot(estaciones, aes(x=Num_HD_Tmin, y=Yield)) + 
   geom_point()+
   geom_smooth() +
-  theme_bw() # fondo blanco y líneas de cuadrícula grises
+  theme_bw() # fondo blanco y lï¿½neas de cuadrï¿½cula grises
 
 ###############################################################
-## Análisis gráfico para evaluar la relación entre variables ##
+## Anï¿½lisis grï¿½fico para evaluar la relaciï¿½n entre variables ##
 ###############################################################
 
-library("GGally") # Esta librería permite aplicar  varias funciones gráficas para el análisis de los datos. 
+library("GGally") # Esta librerï¿½a permite aplicar  varias funciones grï¿½ficas para el anï¿½lisis de los datos. 
 ggpairs(estaciones)
 
 
@@ -177,12 +177,12 @@ ggpairs(data_2)
 
 
 ##################################################################
-## VIF Función para detectar Multicolinearidad en las variables ##
+## VIF Funciï¿½n para detectar Multicolinearidad en las variables ##
 ##################################################################
 
 library(usdm)
 
-# Utiliza el índice variance inflation factor (VIF) al grupo de variables y excluye aquellas en las cuales existe alta correlación.
+# Utiliza el ï¿½ndice variance inflation factor (VIF) al grupo de variables y excluye aquellas en las cuales existe alta correlaciï¿½n.
 
 VIF_var <- vifstep(data_2,th = 10)
 VIF_var
